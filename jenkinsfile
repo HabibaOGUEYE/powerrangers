@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                dir("powerrangers/") {
+                    sh 'docker build -t app:v1 .'
+                }
+            }
+        }
+        stage('Prepare Environement') {
+            steps
+            {
+                script {
+                    containerName = sh(returnStdout: true, script: "docker ps -a -f 'name=test-container' --format '{{.Names}}'").trim()
+                    if(containerName == "test-container")
+                    {
+                        sh 'docker rm test-container --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                    }
+                    else
+                    {
+                        sh "echo 'Ennvironnement OK'"
+                    }
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 8090:8080 --name test-container app:v1'
+                sh 'sleep 15s'
+            }
+        }
+        stage('Test Docker Container') {
+            steps {
+               sh 'curl http://localhost:8090/app/index.php'
+            }
+        }
+        stage('Clean Environment') {
+            steps {
+                sh 'docker stop test-container'
+                sh 'docker rm test-container'
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+

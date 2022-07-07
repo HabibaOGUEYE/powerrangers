@@ -74,7 +74,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="Presentation.php">Présentation</a></li>
+                <li><a href="Presentation.html">Présentation</a></li>
                 <li><a href="site.php">Consultez le calendrier</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
