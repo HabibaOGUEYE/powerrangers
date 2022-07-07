@@ -3,9 +3,9 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                dir("powerrangers/") {
+ 
                     sh 'docker build -t app:v1 .'
-                }
+                
             }
         }
         stage('Prepare Environement') {
